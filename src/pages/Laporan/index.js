@@ -73,7 +73,7 @@ export default function Laporan({ navigation, route }) {
                     <th>Sisa Uang</th>
                  </tr>
                  <tr>
-                    <td style="text-align:center" >${parseFloat(beli[0] - jual[0])}</td>
+                    <td style="text-align:center" >${parseFloat(beli[0] - jual[0]).toFixed(2)}</td>
                     <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[1] - beli[1]))}</td>
                  </tr>
              <tr>
@@ -81,8 +81,8 @@ export default function Laporan({ navigation, route }) {
                  <th>Berat Pembelian</th>
               </tr>
               <tr>
-                 <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[0]))}</td>
-                 <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(beli[0]))}</td>
+                 <td style="text-align:center" >${parseFloat(jual[0]).toFixed(2)}</td>
+                 <td style="text-align:center" >${parseFloat(beli[0]).toFixed(2)}</td>
               </tr>
 
               <tr>
@@ -98,8 +98,8 @@ export default function Laporan({ navigation, route }) {
               <th>Rata-rata Pembelian</th>
            </tr>
            <tr>
-              <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[2]))}</td>
-              <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(beli[2]))}</td>
+              <td style="text-align:center" >${parseFloat(jual[1] / jual[0]).toFixed(2)}</td>
+              <td style="text-align:center" >${parseFloat(beli[1] / beli[0]).toFixed(2)}</td>
            </tr>
         </table>
 
@@ -112,7 +112,7 @@ export default function Laporan({ navigation, route }) {
                     <th>Sisa Uang</th>
                 </tr>
                 <tr>
-                    <td style="text-align:center" >${parseFloat(tukarKurang[0] - tukarTambah[0])}</td>
+                    <td style="text-align:center" >${parseFloat(tukarKurang[0] - tukarTambah[0]).toFixed(2)}</td>
                     <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarTambah[1] - tukarKurang[1]))}</td>
                 </tr>
                 <tr>
@@ -120,8 +120,8 @@ export default function Laporan({ navigation, route }) {
                 <th>Berat Tukar Kurang</th>
                 </tr>
                 <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarTambah[0]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarKurang[0]))}</td>
+                <td style="text-align:center" >${parseFloat(tukarTambah[0]).toFixed(2)}</td>
+                <td style="text-align:center" >${parseFloat(tukarKurang[0]).toFixed(2)}</td>
                 </tr>
 
                 <tr>
@@ -137,8 +137,8 @@ export default function Laporan({ navigation, route }) {
                 <th>Rata-rata Tukar Kurang</th>
                 </tr>
                 <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarTambah[2]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarKurang[2]))}</td>
+                <td style="text-align:center" >${parseFloat(tukarTambah[1] / tukarTambah[0]).toFixed(2)}</td>
+                <td style="text-align:center" >${parseFloat(tukarKurang[1] / tukarKurang[0]).toFixed(2)}</td>
                 </tr>
 
                 </table>
@@ -152,7 +152,7 @@ export default function Laporan({ navigation, route }) {
                     <th>Sisa Uang Total</th>
                 </tr>
                 <tr>
-                    <td style="text-align:center" >${parseFloat(totalin[0] - totalout[0])}</td>
+                    <td style="text-align:center" >${parseFloat(totalin[0] - totalout[0]).toFixed(2)}</td>
                     <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalout[1] - totalin[1]))}</td>
                 </tr>
                 <tr>
@@ -160,8 +160,8 @@ export default function Laporan({ navigation, route }) {
                 <th>Berat TK + Pembelian</th>
                 </tr>
                 <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalout[0]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalin[0]))}</td>
+                <td style="text-align:center" >${parseFloat(totalout[0]).toFixed(2)}</td>
+                <td style="text-align:center" >${parseFloat(totalin[0]).toFixed(2)}</td>
                 </tr>
 
                 <tr>
@@ -177,8 +177,8 @@ export default function Laporan({ navigation, route }) {
                 <th>Rata-rata TK + Pembelian</th>
                 </tr>
                 <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalout[2]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalin[2]))}</td>
+                <td style="text-align:center" >${parseFloat(totalout[1] / totalout[0]).toFixed(2)}</td>
+                <td style="text-align:center" >${parseFloat(totalin[1] / totalin[0]).toFixed(2)}</td>
                 </tr>
                 </table>
                  `;
@@ -467,7 +467,7 @@ export default function Laporan({ navigation, route }) {
                     </View>
                     <DatePicker
                         style={{ width: '100%' }}
-                        date={kirim.tanggal_awal}
+                        date={kirim.tanggal_akhir}
                         mode="date"
                         showIcon={false}
                         placeholder="select date"
@@ -493,7 +493,7 @@ export default function Laporan({ navigation, route }) {
                         onDateChange={(date) => {
                             setKirim({
                                 ...kirim,
-                                tanggal_awal: date
+                                tanggal_akhir: date
                             });
 
                         }}
@@ -567,15 +567,15 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Sisa Barang" value={parseFloat(beli[0] - jual[0])} />
+                            <MyDataInfo label="Sisa Barang" value={parseFloat(beli[0] - jual[0]).toFixed(2)} />
                             <MyDataInfo label="Sisa uang" value={new Intl.NumberFormat().format(parseFloat(jual[1] - beli[1]))} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Berat Penjualan" value={new Intl.NumberFormat().format(parseFloat(jual[0]))} />
-                            <MyDataInfo label="Berat Pembelian" value={new Intl.NumberFormat().format(parseFloat(beli[0]))} />
+                            <MyDataInfo label="Berat Penjualan" value={parseFloat(jual[0]).toFixed(2)} />
+                            <MyDataInfo label="Berat Pembelian" value={parseFloat(beli[0]).toFixed(2)} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -588,8 +588,8 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Rata-rata Penjualan" value={new Intl.NumberFormat().format(parseFloat(jual[2]))} />
-                            <MyDataInfo label="Rata-rata Pembelian" value={new Intl.NumberFormat().format(parseFloat(beli[2]))} />
+                            <MyDataInfo label="Rata-rata Penjualan" value={parseFloat(jual[1] / jual[0]).toFixed(2)} />
+                            <MyDataInfo label="Rata-rata Pembelian" value={parseFloat(beli[1] / beli[0]).toFixed(2)} />
                         </View>
 
                     </View>
@@ -613,15 +613,15 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Sisa Barang" value={parseFloat(tukarKurang[0] - tukarTambah[0])} />
+                            <MyDataInfo label="Sisa Barang" value={parseFloat(tukarKurang[0] - tukarTambah[0]).toFixed(2)} />
                             <MyDataInfo label="Sisa uang" value={new Intl.NumberFormat().format(parseFloat(tukarTambah[1] - tukarKurang[1]))} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Berat Tukar Tambah" value={new Intl.NumberFormat().format(parseFloat(tukarTambah[0]))} />
-                            <MyDataInfo label="Berat Tukar Kurang" value={new Intl.NumberFormat().format(parseFloat(tukarKurang[0]))} />
+                            <MyDataInfo label="Berat Tukar Tambah" value={parseFloat(tukarTambah[0]).toFixed(2)} />
+                            <MyDataInfo label="Berat Tukar Kurang" value={parseFloat(tukarKurang[0]).toFixed(2)} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -634,8 +634,8 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Rata-rata Tukar Tambah" value={new Intl.NumberFormat().format(parseFloat(tukarTambah[2]))} />
-                            <MyDataInfo label="Rata-rata Tukar Kurang" value={new Intl.NumberFormat().format(parseFloat(tukarKurang[2]))} />
+                            <MyDataInfo label="Rata-rata Tukar Tambah" value={parseFloat(tukarTambah[1] / tukarTambah[0]).toFixed(2)} />
+                            <MyDataInfo label="Rata-rata Tukar Kurang" value={parseFloat(tukarKurang[1] / tukarKurang[0]).toFixed(2)} />
                         </View>
 
                     </View>
@@ -658,15 +658,15 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Sisa Barang Total" value={parseFloat(totalin[0] - totalout[0])} />
+                            <MyDataInfo label="Sisa Barang Total" value={parseFloat(totalin[0] - totalout[0]).toFixed(2)} />
                             <MyDataInfo label="Sisa uang Total" value={new Intl.NumberFormat().format(parseFloat(totalout[1] - totalin[1]))} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Berat TK + Penjualan" value={new Intl.NumberFormat().format(parseFloat(totalout[0]))} />
-                            <MyDataInfo label="Berat TK + Pembelian" value={new Intl.NumberFormat().format(parseFloat(totalin[0]))} />
+                            <MyDataInfo label="Berat TK + Penjualan" value={parseFloat(totalout[0]).toFixed(2)} />
+                            <MyDataInfo label="Berat TK + Pembelian" value={parseFloat(totalin[0]).toFixed(2)} />
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -679,8 +679,8 @@ export default function Laporan({ navigation, route }) {
                             flexDirection: 'row',
                             marginVertical: 5,
                         }}>
-                            <MyDataInfo label="Rata-rata TK + Penjualan" value={new Intl.NumberFormat().format(parseFloat(totalout[2]))} />
-                            <MyDataInfo label="Rata-rata TK + Pembelian" value={new Intl.NumberFormat().format(parseFloat(totalin[2]))} />
+                            <MyDataInfo label="Rata-rata TK + Penjualan" value={parseFloat(totalout[1] / totalout[0]).toFixed(2)} />
+                            <MyDataInfo label="Rata-rata TK + Pembelian" value={parseFloat(totalin[1] / totalin[0]).toFixed(2)} />
                         </View>
 
                     </View>

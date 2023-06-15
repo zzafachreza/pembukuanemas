@@ -39,7 +39,9 @@ export default function LihatData({ navigation, route }) {
 
 
         let arr = [
-            `<table width="100%" border="1" style="margin-top:0%;border-collapse:collapse" cellpadding="4">
+            `
+            <center><h3>${moment(kirim.tanggal).format('dddd, DD MMMM YYYY')}</h3></center>
+            <table width="100%" border="1" style="margin-top:0%;border-collapse:collapse" cellpadding="4">
                 <tr>
                     <th>No</th>
                     <th>Berat</th>
@@ -55,11 +57,12 @@ export default function LihatData({ navigation, route }) {
 
             arr.push(`<tr>
                         <td>${index + 1}</td>
-                        <td>${item.jenis_transaksi}</td>
+                      
                         <td>${parseFloat(item.berat).toFixed(2)}</td>
                         <td>${item.kadar}</td>
                         <td>${item.jenis}</td>
                         <td>${new Intl.NumberFormat().format(item.harga)}</td>
+                        <td>${item.jenis_transaksi}</td>
                         </tr>`)
         })
 

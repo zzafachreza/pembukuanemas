@@ -223,7 +223,7 @@ export default function Database({ navigation, route }) {
                     }}>Restore Data</Text>
                 </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={() => {
+            {/* <TouchableNativeFeedback onPress={() => {
                 Alert.alert(MYAPP, 'Apakah kamu yakin akan bersihkan semua data ini ?', [
                     { text: 'TIDAK' },
                     {
@@ -263,7 +263,7 @@ export default function Database({ navigation, route }) {
                         color: colors.white
                     }}>Clear Data</Text>
                 </View>
-            </TouchableNativeFeedback>
+            </TouchableNativeFeedback> */}
         </SafeAreaView>
     )
 }
