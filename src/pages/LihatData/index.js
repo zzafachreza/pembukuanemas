@@ -55,13 +55,24 @@ export default function LihatData({ navigation, route }) {
 
         data.map((item, index) => {
 
+            let thisharga = 0;
+            let thisberat = 0;
+
+            if (item.jenis_transaksi == 'Penjualan' || item.jenis_transaksi == 'Tukar Tambah') {
+                thisharga = item.harga;
+                thisberat = item.berat * -1;
+            } else {
+                thisharga = item.harga * -1;
+                thisberat = item.berat;
+            }
+
             arr.push(`<tr>
                         <td>${index + 1}</td>
                       
-                        <td>${parseFloat(item.berat).toFixed(2)}</td>
+                        <td>${parseFloat(thisberat).toFixed(2)}</td>
                         <td>${item.kadar}</td>
                         <td>${item.jenis}</td>
-                        <td>${new Intl.NumberFormat().format(item.harga)}</td>
+                        <td>${new Intl.NumberFormat().format(thisharga)}</td>
                         <td>${item.jenis_transaksi}</td>
                         </tr>`)
         })
@@ -218,6 +229,18 @@ export default function LihatData({ navigation, route }) {
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {data.map((item, index) => {
+
+                        let thisharga = 0;
+                        let thisberat = 0;
+
+                        if (item.jenis_transaksi == 'Penjualan' || item.jenis_transaksi == 'Tukar Tambah') {
+                            thisharga = item.harga;
+                            thisberat = item.berat * -1;
+                        } else {
+                            thisharga = item.harga * -1;
+                            thisberat = item.berat;
+                        }
+
                         return (
                             <TouchableOpacity onPress={() => navigation.navigate('DetailData', item)} style={{
                                 flexDirection: 'row',
@@ -228,7 +251,7 @@ export default function LihatData({ navigation, route }) {
                                 </View>
 
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
-                                    <Text style={styles.textIsi}>{parseFloat(item.berat).toFixed(2)}</Text>
+                                    <Text style={styles.textIsi}>{parseFloat(thisberat).toFixed(2)}</Text>
                                 </View>
                                 <View style={{ flex: 0.4, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.kadar}</Text>
@@ -237,7 +260,7 @@ export default function LihatData({ navigation, route }) {
                                     <Text style={styles.textIsi}>{item.jenis}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5, }}>
-                                    <Text style={styles.textIsi}>{new Intl.NumberFormat().format(item.harga)}</Text>
+                                    <Text style={styles.textIsi}>{new Intl.NumberFormat().format(thisharga)}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.jenis_transaksi}</Text>
