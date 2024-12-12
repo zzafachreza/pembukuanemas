@@ -23,6 +23,18 @@ export default function ({ navigation }) {
   const masuk = () => {
     const MYDB = SQLite.openDatabase("zavalabs.db", "1.0", "zavalabs_emas", 200000, () => {
       console.log("Database OPENED");
+
+      MYDB.transaction((tx) => {
+
+        tx.executeSql("CREATE TABLE IF NOT EXISTS transaksi (id integer PRIMARY KEY AUTOINCREMENT,jenis_transaksi text NOT NULL, tanggal date NOT NULL,nota text NOT NULL,berat double NOT NULL,kadar text NOT NULL,jenis text NOT NULL,barang text NOT NULL,harga double NOT NULL,pembayaran text NOT NULL,nama text NOT NULL)", [], (tx, results) => {
+          console.log("Query Create Table is completed");
+          navigation.replace('Home');
+          storeData('user', {
+            password: kirim.password,
+          });
+        });
+      })
+
     }, () => {
       console.log("SQL Error: " + err);
     })
@@ -40,14 +52,17 @@ export default function ({ navigation }) {
         console.log(kirim);
 
         MYDB.transaction((tx) => {
-          tx.executeSql("CREATE TABLE IF NOT EXISTS transaksi (id integer PRIMARY KEY AUTOINCREMENT, tanggal date NOT NULL,jenis_transaksi text NOT NULL,berat double NOT NULL,kadar text NOT NULL,jenis text NOT NULL,harga double NOT NULL)", [], (tx, results) => {
+
+          tx.executeSql("CREATE TABLE IF NOT EXISTS transaksi (id integer PRIMARY KEY AUTOINCREMENT,jenis_transaksi text NOT NULL, tanggal date NOT NULL,nota text NOT NULL,berat double NOT NULL,kadar text NOT NULL,jenis text NOT NULL,barang text NOT NULL,harga double NOT NULL,pembayaran text NOT NULL,nama text NOT NULL)", [], (tx, results) => {
             console.log("Query Create Table is completed");
             navigation.replace('Home');
             storeData('user', {
               password: kirim.password,
             });
+          }).catch(err => {
+            console.log(err)
           });
-        });
+        })
 
 
       }

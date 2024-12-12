@@ -52,7 +52,8 @@ export default function Splash({ navigation }) {
 
   return (
     <SafeAreaView style={{
-      flex: 1
+      flex: 1,
+      backgroundColor: colors.white
     }}>
       <View style={{
         flex: 0.9,
@@ -60,10 +61,19 @@ export default function Splash({ navigation }) {
         alignItems: 'center'
       }}>
 
+
+
         <Image source={require('../../assets/logo.png')} style={{
           width: windowWidth / 1.2,
           resizeMode: 'contain'
         }} />
+
+        <Text style={{
+          fontFamily: fonts.secondary[800],
+          color: colors.black,
+          fontSize: 16,
+          marginBottom: 20,
+        }}>PEMBUKUAN TOKO EMAS</Text>
 
         <ActivityIndicator size="large" color={colors.primary} />
 
