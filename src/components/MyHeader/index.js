@@ -1,38 +1,56 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { colors, fonts, windowWidth } from '../../utils';
+import React, { useRef, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
+import { MyDimensi, colors, fonts, windowWidth, Color } from '../../utils';
 import { useNavigation } from '@react-navigation/native';
-export default function MyHeader({ menu }) {
-
+import { Icon } from 'react-native-elements';
+export default function MyHeader({ onPress, color = colors.white, title, icon = false, iconname = 'search' }) {
   const navigation = useNavigation();
   return (
 
+
     <View style={{
-      flexDirection: 'row'
-    }
-    }>
-      <View style={{
-        flex: 1,
-      }}>
-        <Text style={{
-          fontFamily: fonts.primary[400],
-          fontSize: windowWidth / 17
-        }}>{menu}</Text>
-      </View>
-      <TouchableOpacity onPress={() => navigation.navigate('AAAtur')} style={{
-        backgroundColor: colors.foourty,
-        height: 30,
+      marginTop: 0,
+      marginHorizontal: 0,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 20,
+      backgroundColor: colors.secondary,
+      padding: 20,
+      justifyContent: 'center',
+      borderBottomLeftRadius: 40,
+      borderBottomRightRadius: 40,
+
+    }}>
+
+      <TouchableOpacity onPress={() => navigation.goBack()} style={{
+
+        flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
-        width: 40,
+        padding: 10,
       }}>
-        <Image source={require('../../assets/menu.png')} style={{
-          width: 18,
-          height: 18,
-        }} />
+        <Icon type='ionicon' name='arrow-back-outline' size={20} color={color} />
       </TouchableOpacity>
-    </View >
+
+
+      <Text style={{
+        ...fonts.headline5,
+        flex: 0.9,
+        textAlign: 'center',
+        marginLeft: -20,
+
+        color: color
+      }}>{title}</Text>
+
+      {icon &&
+        <TouchableOpacity onPress={onPress} style={{
+
+        }}>
+          <Icon name={iconname} size={20} color={color} />
+        </TouchableOpacity>
+      }
+    </View>
+
   );
 }
 

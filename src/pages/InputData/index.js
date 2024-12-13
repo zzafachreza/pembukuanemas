@@ -41,27 +41,27 @@ export default function InputData({ navigation, route }) {
     const sendServer = () => {
         console.log(kirim);
 
-        __conn().transaction(tx => {
+        // __conn().transaction(tx => {
 
-            tx.executeSql(`INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}')`, [], (tx, res) => {
+        //     tx.executeSql(`INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}')`, [], (tx, res) => {
 
-                console.log(res);
-                console.log('berhasil');
-                showMessage({
-                    message: 'Data berhasil di simpan !',
-                    type: 'success'
-                });
-                setKirim({
-                    tanggal: moment().format('YYYY-MM-DD'),
-                    jenis_transaksi: 'Penjualan',
-                    berat: '',
-                    kadar: 'LM Antam',
-                    jenis: 'Anting',
-                    harga: ''
-                })
-            })
+        //         console.log(res);
+        //         console.log('berhasil');
+        //         showMessage({
+        //             message: 'Data berhasil di simpan !',
+        //             type: 'success'
+        //         });
+        //         setKirim({
+        //             tanggal: moment().format('YYYY-MM-DD'),
+        //             jenis_transaksi: 'Penjualan',
+        //             berat: '',
+        //             kadar: 'LM Antam',
+        //             jenis: 'Anting',
+        //             harga: ''
+        //         })
+        //     })
 
-        });
+        // });
 
     }
 

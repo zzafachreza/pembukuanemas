@@ -20,6 +20,39 @@ import { launchCamera } from 'react-native-image-picker';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
 
+
+
+const MyMenu = ({ onPress, label = "Input Transaksi", icon = "duplicate" }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={{
+      marginTop: 10,
+      // backgroundColor: 'red',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      <View style={{
+        width: windowWidth / 2.3,
+        borderRadius: 10,
+        backgroundColor: colors.primary,
+        height: windowWidth / 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Icon type='ionicon' name={icon} size={50} color={colors.white} />
+        <Text style={{
+          marginTop: 4,
+          fontFamily: fonts.secondary[600],
+          fontSize: 10,
+          textAlign: 'center',
+          color: colors.white,
+        }}>{label}</Text>
+      </View>
+
+
+    </TouchableOpacity>
+  )
+}
+
 export default function Home({ navigation }) {
   return (
     <SafeAreaView style={{
@@ -42,8 +75,7 @@ export default function Home({ navigation }) {
         }}>
           <Text style={{
             paddingLeft: 10,
-            fontFamily: fonts.secondary[600],
-            fontSize: 20,
+            ...fonts.headline3,
           }}>Pembukuan Toko Emas</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('AAAtur')} style={{
@@ -62,125 +94,43 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={{
-        flex: 0.5,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
-
         <Image source={require('../../assets/logo.png')} style={{
-          width: 220,
-          height: '100%',
+          width: 180,
+          height: 130,
           resizeMode: 'contain'
         }} />
       </View>
+
       <View style={{
         flex: 1,
-        alignItems: 'center',
+        padding: 10,
       }}>
-
-
-        <View style={{
-          marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-around'
-        }}>
-
-          <TouchableOpacity onPress={() => navigation.navigate('InputData')} style={{
-            width: windowWidth / 2.2,
-            borderRadius: 10,
-            backgroundColor: colors.primary,
-            borderWidth: 1,
-            height: windowHeight / 5,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-
-            marginRight: 10,
-            padding: 10,
-          }}>
-            <Icon type='ionicon' name='duplicate' size={55} color={colors.white} />
-            <Text style={{
-              fontFamily: fonts.secondary[600],
-              fontSize: 18,
-              marginTop: 5,
-              color: colors.white
-            }}>Input Data</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('LihatData')} style={{
-            width: windowWidth / 2.2,
-            borderRadius: 10,
-            backgroundColor: colors.primary,
-            borderWidth: 1,
-            height: windowHeight / 5,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-
-            marginRight: 10,
-            padding: 10,
-          }}>
-            <Icon type='ionicon' name='receipt' size={55} color={colors.white} />
-            <Text style={{
-              fontFamily: fonts.secondary[600],
-              fontSize: 18,
-              marginTop: 5,
-              color: colors.white
-            }}>Lihat Data</Text>
-          </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <MyMenu label="Input Transaksi" icon='cart' />
+          <MyMenu label="Lihat Laporan Laba Rugi" icon='bar-chart' />
 
         </View>
-        <View style={{
-          marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-around'
-        }}>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Laporan')} style={{
-            width: windowWidth / 2.2,
-            borderRadius: 10,
-            backgroundColor: colors.primary,
-            borderWidth: 1,
-            height: windowHeight / 5,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-
-            marginRight: 10,
-            padding: 10,
-          }}>
-            <Icon type='ionicon' name='bar-chart' size={55} color={colors.white} />
-            <Text style={{
-              fontFamily: fonts.secondary[600],
-              fontSize: 18,
-              marginTop: 5,
-              color: colors.white
-            }}>Laporan Data</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Database')} style={{
-            width: windowWidth / 2.2,
-            borderRadius: 10,
-            backgroundColor: colors.primary,
-            borderWidth: 1,
-            height: windowHeight / 5,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-
-            marginRight: 10,
-            padding: 10,
-          }}>
-            <Icon type='ionicon' name='server' size={55} color={colors.white} />
-            <Text style={{
-              fontFamily: fonts.secondary[600],
-              fontSize: 18,
-              marginTop: 5,
-              color: colors.white
-            }}>Database</Text>
-          </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <MyMenu label='Lihat Jurnal Harian' icon='receipt' />
+          <MyMenu label='Lihat Neraca' icon='pie-chart' />
 
         </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <MyMenu label='Lihat Jurnal Khusus' icon='logo-windows' />
+          <MyMenu label='Data Custom' icon='logo-react' />
+
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <MyMenu label='Lihat Balance Barang' icon='logo-stackoverflow' />
+          <MyMenu label='Data Base' icon='server' />
+
+        </View>
+
 
       </View>
 
@@ -188,14 +138,13 @@ export default function Home({ navigation }) {
         padding: 10,
       }}>
         <Text style={{
-          fontFamily: fonts.secondary[600],
+          ...fonts.headline4,
           textAlign: 'center',
-          fontSize: 20
+
         }}>Toko Emas Permata</Text>
         <Text style={{
-          fontFamily: fonts.secondary[400],
+          ...fonts.caption,
           textAlign: 'center',
-          fontSize: 14
         }}>Jl. Baturaja No. 324 Tanjung Enim Sumatra Selatan</Text>
       </View>
     </SafeAreaView>
