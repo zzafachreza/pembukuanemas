@@ -1,37 +1,40 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { fonts, windowWidth, } from '../../utils/fonts';
+import { MyDimensi, fonts, windowWidth, } from '../../utils/fonts';
 import { Icon } from 'react-native-elements';
-import { colors } from '../../utils';
+import { Color, colors } from '../../utils';
 
 export default function MyButton({
   title,
-  warna = colors.secondary,
+  warna = colors.primary,
   onPress,
   Icons,
   radius = 10,
-  colorText = 'white',
+  colorText = colors.white,
   fontWeight = 'normal',
-  iconColor = 'white',
+  iconColor = colors.white,
   borderSize = 0,
-  borderColor = 'red',
+  kiri = true,
+  borderColor = Color.blueGray[300],
 }) {
   return (
     <TouchableOpacity
-      style={styles(warna, radius, borderSize, borderColor).btn}
+      style={styles(warna, radius,).btn}
       onPress={onPress}>
-      <Icon type="ionicon" name={Icons} color={iconColor} size={windowWidth / 35} />
+
+      {kiri && <Icon type="ionicon" name={Icons} color={iconColor} size={18} />}
       <Text
         style={{
           color: colorText,
-          fontSize: windowWidth / 35,
-          left: 5,
-          fontSize: windowWidth / 28,
-          fontFamily: fonts.primary[600],
+          textAlign: "center",
+          fontFamily: fonts.secondary[600],
+          fontSize: 12,
+          left: 10,
           // fontWeight: fontWeight,
         }}>
         {title}
       </Text>
+      {!kiri && <Icon type="ionicon" name={Icons} color={iconColor} size={18} />}
     </TouchableOpacity>
   );
 }
@@ -39,7 +42,7 @@ export default function MyButton({
 const styles = (warna, radius, borderSize, borderColor) =>
   StyleSheet.create({
     btn: {
-      height: 50,
+      height: 45,
       borderRadius: radius,
       justifyContent: 'center',
       alignItems: 'center',
@@ -47,5 +50,6 @@ const styles = (warna, radius, borderSize, borderColor) =>
       borderWidth: borderSize,
       borderColor: borderColor,
       flexDirection: 'row',
+
     },
   });

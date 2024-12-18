@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import { colors, fonts } from '../../utils'
+import { Color, colors, fonts } from '../../utils'
 import moment from 'moment'
 import { MyButton } from '../../components'
 import { MYAPP } from '../../utils/localStorage'
@@ -45,15 +45,16 @@ export default function DetailData({ navigation, route }) {
             <View style={{
                 borderBottomWidth: 1,
                 paddingBottom: 5,
-                borderBottomColor: colors.zavalabs
+                borderBottomColor: Color.blueGray[200],
             }}>
                 <Text style={{
-                    fontFamily: fonts.secondary[400],
-                    fontSize: 15,
+                    fontSize: 14,
+                    fontFamily: fonts.secondary[700],
+                    color: colors.black
                 }}>{label}</Text>
                 <Text style={{
-                    fontFamily: fonts.secondary[600],
-                    fontSize: 15,
+                    ...fonts.caption,
+                    fontSize: 14,
                 }}>{value}</Text>
             </View>
         )
@@ -67,12 +68,17 @@ export default function DetailData({ navigation, route }) {
             <View style={{
                 flex: 1,
             }}>
-                <MylistData label="Tanggal" value={moment(item.tanggal).format('dddd, DD MMMM YYYY')} />
+
                 <MylistData label="Kode Transaksi" value={item.jenis_transaksi} />
-                <MylistData label="Berat" value={parseFloat(item.berat).toFixed(2)} />
-                <MylistData label="Kadar" value={item.kadar} />
+                <MylistData label="Tanggal" value={moment(item.tanggal).format('dddd, DD MMMM YYYY')} />
+                <MylistData label="No. Nota" value={item.nota} />
+                <MylistData label="Berat (gram)" value={parseFloat(item.berat).toFixed(2)} />
+                <MylistData label="Stok" value={item.kadar} />
                 <MylistData label="Jenis" value={item.jenis} />
+                <MylistData label="Barang" value={item.barang} />
                 <MylistData label="Harga" value={new Intl.NumberFormat().format(item.harga)} />
+                <MylistData label="Metode Pembayaran" value={item.pembayaran} />
+                <MylistData label="Nama" value={item.nama} />
             </View>
             <View style={{
                 flexDirection: 'row'
@@ -91,13 +97,13 @@ export default function DetailData({ navigation, route }) {
                                 }
                             }
                         ])
-                    }} title="Hapus transaksi" Icons="trash-outline" warna={colors.danger} />
+                    }} title="Hapus" Icons="trash-outline" warna={colors.danger} />
                 </View>
                 <View style={{
                     flex: 1,
                     paddingLeft: 5,
                 }}>
-                    <MyButton onPress={() => navigation.replace('EditData', item)} title="Edit transaksi" Icons="create-outline" warna={colors.primary} />
+                    <MyButton onPress={() => navigation.replace('EditData', item)} title="Edit" Icons="create-outline" warna={colors.primary} />
                 </View>
             </View>
         </SafeAreaView>

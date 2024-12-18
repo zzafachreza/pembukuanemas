@@ -25,7 +25,7 @@ export default function MyPicker({
       <Text style={{
         ...fonts.subheadline3,
         color: textColor,
-        marginBottom: 8,
+        marginBottom: 2,
       }}>{label}</Text>
 
       <View style={{
@@ -37,12 +37,12 @@ export default function MyPicker({
       }}>
         <View style={{
           position: 'absolute',
-          left: 12,
-          top: 13,
+          left: 10,
+          top: 9,
         }}>
-          <Icon type='ionicon' name={iconname} color={Color.blueGray[300]} size={24} />
+          <Icon type='ionicon' name={iconname} color={Color.blueGray[300]} size={20} />
         </View>
-        <Picker style={{ width: '90%', height: 50, left: 30, top: -3, transform: [{ scale: 1 }] }}
+        <Picker style={{ width: '90%', height: 50, left: 5, top: -3, backgroundColor: colors.white, transform: [{ scale: 0.8, }] }}
           selectedValue={value} onValueChange={onValueChange}>
           <Picker.Item textStyle={{ fontSize: 12, ...fonts.body2, color: colors.primary, }} value="" label="" />
           {data.map(item => {
@@ -52,11 +52,11 @@ export default function MyPicker({
         <View style={{
           position: 'absolute',
           right: 12,
-          top: 13,
+          top: 15,
           backgroundColor: Color.white[900]
         }}>
           <View style={{ marginTop: -5 }}>
-            <Icon type='ionicon' name='caret-down-outline' color={Color.blueGray[300]} size={24} />
+            <Icon type='ionicon' name='caret-down-outline' color={Color.blueGray[300]} size={20} />
           </View>
         </View>
       </View>

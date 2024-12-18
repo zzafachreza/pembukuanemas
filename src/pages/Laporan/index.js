@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
+import { Alert, StyleSheet, Text, View, PermissionsAndroid, Linking } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { apiURL, getData, MYAPP, storeData } from '../../utils/localStorage';
@@ -7,7 +7,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { showMessage } from 'react-native-flash-message';
 import Sound from 'react-native-sound';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { MyButton, MyGap, MyHeader, MyInput, MyPicker } from '../../components';
+import { MyButton, MyCalendar, MyGap, MyHeader, MyInput, MyPicker } from '../../components';
 import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
@@ -17,6 +17,11 @@ import SQLite from 'react-native-sqlite-storage';
 import 'moment/locale/id'
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
+import FileViewer from 'react-native-file-viewer';
+var RNFS = require('react-native-fs');
+import XLSX from 'xlsx';
+
+
 export default function Laporan({ navigation, route }) {
 
     const [loading, setLoading] = useState(true);
@@ -31,7 +36,7 @@ export default function Laporan({ navigation, route }) {
 
     const isFocused = useIsFocused();
     const [kirim, setKirim] = useState({
-        kadar: 'LM Antam',
+        kadar: 'LM',
         tanggal_awal: moment().format('YYYY-MM-DD'),
         tanggal_akhir: moment().format('YYYY-MM-DD'),
     })
@@ -53,7 +58,7 @@ export default function Laporan({ navigation, route }) {
 
             <table width="100%" border="1" style="margin-top:5%;border-collapse:collapse" cellpadding="4">
                 <tr>
-                    <th>Kadar</th>
+                    <th>Stok</th>
                     <th>Tanggal</th>
                  </tr> 
 
@@ -65,121 +70,51 @@ export default function Laporan({ navigation, route }) {
             </table>
             
             <table width="100%" border="1" style="margin-top:5%;border-collapse:collapse" cellpadding="4">
-                <tr>
-                    <th colspan="2">Data Penjualan / Pembelian</th>
-                 </tr> 
-                 <tr>
+               <tr>
+                        <th>Berat Penjualan</th>
+                        <td style="text-align:center" >${parseFloat(jual[0]).toFixed(2)}</td>
+               <tr>
+               <tr>
+                        <th>Berat Pembelian</th>
+                         <td style="text-align:center" >${parseFloat(beli[0]).toFixed(2)}</td>
+               </tr>
+
+               <tr>
                     <th>Sisa Barang</th>
-                    <th>Sisa Uang</th>
-                 </tr>
-                 <tr>
                     <td style="text-align:center" >${parseFloat(beli[0] - jual[0]).toFixed(2)}</td>
+                 </tr>
+
+                 <tr>
+                    <th colspan="2"></th>
+                 <tr>
+                  <tr>
+                        <th>Uang Penjualan</th>
+                        <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[1]))}</td>
+                 <tr>
+                  <tr>
+                        <th>Uang Pembelian</th>
+                        <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(beli[1]))}</td>
+                 <tr>
+                   <tr>
+                    <th>Sisa Uang</th>
                     <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[1] - beli[1]))}</td>
                  </tr>
-             <tr>
-                 <th>Berat Penjualan</th>
-                 <th>Berat Pembelian</th>
+                 <tr>
+                    <th colspan="2"></th>
+                 <tr>
+                 <tr>
+                    <th>Uang Rata-rata Penjualan</th>
+                     <td style="text-align:center" >${parseFloat(jual[1] / jual[0]).toFixed(2)}</td>
               </tr>
               <tr>
-                 <td style="text-align:center" >${parseFloat(jual[0]).toFixed(2)}</td>
-                 <td style="text-align:center" >${parseFloat(beli[0]).toFixed(2)}</td>
-              </tr>
+                <th>Rata-rata Pembelian</th>
+                <td style="text-align:center" >${parseFloat(beli[1] / beli[0]).toFixed(2)}</td>
+               </tr>
 
-              <tr>
-              <th>Uang Penjualan</th>
-              <th>Uang Pembelian</th>
-           </tr>
-           <tr>
-              <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(jual[1]))}</td>
-              <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(beli[1]))}</td>
-           </tr>
-           <tr>
-              <th>Rata-rata Penjualan</th>
-              <th>Rata-rata Pembelian</th>
-           </tr>
-           <tr>
-              <td style="text-align:center" >${parseFloat(jual[1] / jual[0]).toFixed(2)}</td>
-              <td style="text-align:center" >${parseFloat(beli[1] / beli[0]).toFixed(2)}</td>
-           </tr>
-        </table>
-
-           <table width="100%" border="1" style="margin-top:5%;border-collapse:collapse" cellpadding="4">
-                <tr>
-                    <th colspan="2">Data Tukar Tambah / Tukar Kurang</th>
-                </tr> 
-                <tr>
-                    <th>Sisa Barang</th>
-                    <th>Sisa Uang</th>
-                </tr>
-                <tr>
-                    <td style="text-align:center" >${parseFloat(tukarKurang[0] - tukarTambah[0]).toFixed(2)}</td>
-                    <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarTambah[1] - tukarKurang[1]))}</td>
-                </tr>
-                <tr>
-                <th>Berat Tukar Tambah</th>
-                <th>Berat Tukar Kurang</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${parseFloat(tukarTambah[0]).toFixed(2)}</td>
-                <td style="text-align:center" >${parseFloat(tukarKurang[0]).toFixed(2)}</td>
-                </tr>
-
-                <tr>
-                <th>Uang Tukar Tambah</th>
-                <th>Uang Tukar Kurang</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarTambah[1]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(tukarKurang[1]))}</td>
-                </tr>
-                <tr>
-                <th>Rata-rata Tukar Tambah</th>
-                <th>Rata-rata Tukar Kurang</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${parseFloat(tukarTambah[1] / tukarTambah[0]).toFixed(2)}</td>
-                <td style="text-align:center" >${parseFloat(tukarKurang[1] / tukarKurang[0]).toFixed(2)}</td>
-                </tr>
-
-                </table>
-
-                <table width="100%" border="1" style="margin-top:5%;border-collapse:collapse" cellpadding="4">
-                <tr>
-                    <th colspan="2">Data Total</th>
-                </tr> 
-                <tr>
-                    <th>Sisa Barang Total</th>
-                    <th>Sisa Uang Total</th>
-                </tr>
-                <tr>
-                    <td style="text-align:center" >${parseFloat(totalin[0] - totalout[0]).toFixed(2)}</td>
-                    <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalout[1] - totalin[1]))}</td>
-                </tr>
-                <tr>
-                <th>Berat TK + Penjualan</th>
-                <th>Berat TK + Pembelian</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${parseFloat(totalout[0]).toFixed(2)}</td>
-                <td style="text-align:center" >${parseFloat(totalin[0]).toFixed(2)}</td>
-                </tr>
-
-                <tr>
-                <th>Uang TK + Penjualan</th>
-                <th>Uang TK + Pembelian</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalout[1]))}</td>
-                <td style="text-align:center" >${new Intl.NumberFormat().format(parseFloat(totalin[1]))}</td>
-                </tr>
-                <tr>
-                <th>Rata-rata TK + Penjualan</th>
-                <th>Rata-rata TK + Pembelian</th>
-                </tr>
-                <tr>
-                <td style="text-align:center" >${parseFloat(totalout[1] / totalout[0]).toFixed(2)}</td>
-                <td style="text-align:center" >${parseFloat(totalin[1] / totalin[0]).toFixed(2)}</td>
-                </tr>
+               
+                 
+                
+             
                 </table>
                  `;
 
@@ -236,7 +171,116 @@ export default function Laporan({ navigation, route }) {
         )
     }
 
+
+    const MyDataInfo2 = ({ label, value }) => {
+        return (
+            <View style={{
+                paddingHorizontal: 20,
+                flexDirection: 'row',
+                paddingVertical: 5,
+            }}>
+                <Text style={{
+                    flex: 1,
+                    fontFamily: fonts.secondary[600],
+                    color: colors.black,
+                    fontSize: 12
+                }}>{label}</Text>
+                <Text style={{
+                    fontFamily: fonts.secondary[800],
+                    color: colors.black,
+                    fontSize: 12
+                }}>{value}</Text>
+            </View>
+        )
+    }
+
     const [data, setData] = useState({});
+
+    const previewFile = (filePath) => {
+        FileViewer.open(filePath)
+            .then(() => {
+                console.log('Success');
+            })
+            .catch(_err => {
+                console.log(_err);
+            });
+    }
+
+
+    // function to handle exporting
+    const exportDataToExcel = async () => {
+
+        // Created Sample data
+        let sample_data_to_export = [
+
+            ['Stok', kirim.kadar],
+            ['Tanggal', kirim.tanggal_awal, kirim.tanggal_akhir],
+
+            ['Berat Penjualan', parseFloat(jual[0]).toFixed(2)],
+            ['Berat Pembelian', parseFloat(beli[0]).toFixed(2)],
+
+            ['Uang Penjualan', new Intl.NumberFormat().format(parseFloat(jual[1]))],
+            ['Uang Pembelian', new Intl.NumberFormat().format(parseFloat(beli[1]))],
+
+            ['Uang Rata-Rata Penjualan', parseFloat(jual[1] / jual[0]).toFixed(2)],
+            ['Uang Rata-Rata Pembelian', parseFloat(beli[1] / beli[0]).toFixed(2)],
+        ];
+
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(sample_data_to_export)
+        XLSX.utils.book_append_sheet(wb, ws, "Users")
+        const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
+
+        // Write generated excel to Storage
+        var URLlocal = RNFS.DownloadDirectoryPath + `/download_${moment().format('Ymdhis')}.xlsx`;
+        RNFS.writeFile(URLlocal, wbout, 'ascii').then((r) => {
+
+            previewFile(URLlocal);
+        }).catch((e) => {
+            console.log('Error', e);
+        });
+
+    }
+
+    const handleClick = async () => {
+        // exportDataToExcel();
+        try {
+            // Check for Permission (check if permission is already given or not)
+            let isPermitedExternalStorage = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+            console.log(isPermitedExternalStorage)
+            if (!isPermitedExternalStorage) {
+
+                // Ask for permission
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: "Storage permission needed",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+
+
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    // Permission Granted (calling our exportDataToExcel function)
+                    exportDataToExcel();
+                    console.log("Permission granted");
+                } else {
+                    // Permission denied
+                    console.log("Permission denied");
+                }
+            } else {
+                // Already have Permission (calling our exportDataToExcel function)
+                exportDataToExcel();
+            }
+        } catch (e) {
+            console.log('Error while checking permission');
+            console.log(e);
+            return
+        }
+
+    };
 
 
 
@@ -352,360 +396,129 @@ export default function Laporan({ navigation, route }) {
             padding: 5,
         }}>
 
-            <View style={{
-                flexDirection: 'row',
-                marginTop: 10,
-            }}>
+            <ScrollView>
                 <View style={{
-                    flex: 1,
-                    paddingRight: 5,
+                    paddingHorizontal: 10,
                 }}>
-                    <MyPicker label="Kadar" iconname="aperture" onValueChange={x => setKirim({
+                    <MyPicker label="Stok" iconname="aperture" onValueChange={x => setKirim({
                         ...kirim,
                         kadar: x
                     })} value={kirim.kadar} data={[
-
-                        { label: 'LM Antam', value: 'LM Antam' },
-                        { label: 'LM UBS', value: 'LM UBS' },
-                        { label: 'LM Hartadinata', value: 'LM Hartadinata' },
-                        { label: 'LM Lain Lain', value: 'LM Lain Lain' },
-                        { label: '99%', value: '99%' },
-                        { label: '95%', value: '95%' },
-                        { label: '91,6%', value: '91,6%' },
-                        { label: '90%', value: '90%' },
-                        { label: '80%', value: '80%' },
-                        { label: '75%', value: '75%' },
-                        { label: '70%', value: '70%' },
-                        { label: '42%', value: '42%' },
-                        { label: '37,5%', value: '37,5%' },
-                        { label: '30%', value: '30%' },
-                        { label: 'Suasa', value: 'Suasa' },
-                        { label: 'Lebur Perak', value: 'Lebur Perak' },
-                        { label: 'Lebur Tembaga', value: 'Lebur Tembaga' },
-                        { label: 'Pengembangan 1', value: 'Pengembangan 1' },
-                        { label: 'Pengembangan 2', value: 'Pengembangan 2' },
-                        { label: 'Pengembangan 3', value: 'Pengembangan 3' },
+                        { label: 'LM', value: 'LM' },
+                        { label: 'MM', value: 'MM' },
+                        { label: '24K', value: '24K' },
+                        { label: '23K', value: '23K' },
+                        { label: '22K', value: '22K' },
+                        { label: '21K', value: '21K' },
+                        { label: '20K', value: '20K' },
+                        { label: '19K', value: '19K' },
+                        { label: '18K', value: '18K' },
+                        { label: '17K', value: '17K' },
+                        { label: '16K', value: '16K' },
+                        { label: '15K', value: '15K' },
+                        { label: '14K', value: '14K' },
+                        { label: '13K', value: '13K' },
+                        { label: '12K', value: '12K' },
+                        { label: '11K', value: '11K' },
+                        { label: '10K', value: '10K' },
+                        { label: '9K', value: '9K' },
+                        { label: '8K', value: '8K' },
+                        { label: '7K', value: '7K' },
+                        { label: '6K', value: '6K' },
+                        { label: '5K', value: '5K' },
+                        { label: '4K', value: '4K' },
+                        { label: '3K', value: '3K' },
+                        { label: '2K', value: '2K' },
+                        { label: '1K', value: '1K' },
+                        { label: 'ERP', value: 'ERP' },
+                        { label: 'ERT', value: 'ERT' },
+                        { label: 'LL1', value: 'LL1' },
+                        { label: 'LL2', value: 'LL2' },
+                        { label: 'LL3', value: 'LL3' },
 
                     ]} />
+
+                    <MyGap jarak={5} />
+                    <MyCalendar label="Dari" value={kirim.tanggal_awal} onDateChange={x => setKirim({ ...kirim, tanggal_awal: x })} />
+                    <MyGap jarak={5} />
+                    <MyCalendar label="Sampai" value={kirim.tanggal_akhir} onDateChange={x => setKirim({ ...kirim, tanggal_akhir: x })} />
+                    <MyGap jarak={10} />
+                    <MyButton onPress={sendServer} warna={colors.danger} title="Proses Data" Icons="refresh" />
                 </View>
-                <View style={{
-                    flex: 1,
-                    paddingRight: 5,
-                }}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 10,
+
+
+
+
+
+
+                {!loading &&
+
+
+
+
+                    <View style={{
+                        marginTop: 10,
+                    }}>
+
+
+                        <View style={{
+                            borderWidth: 1,
+                            margin: 5,
+                            borderRadius: 10,
+                            overflow: 'hidden',
+                            borderColor: colors.border
                         }}>
-                        <Icon type="ionicon" name="calendar-outline" color={colors.black} size={16} />
-                        <Text
-                            style={{
-                                fontFamily: fonts.secondary[600],
-                                color: colors.black,
-                                left: 10,
-                                fontSize: 12,
+
+                            <MyGap jarak={10} />
+                            <MyDataInfo2 label="Berat Penjualan" value={parseFloat(jual[0]).toFixed(2)} />
+                            <MyDataInfo2 label="Berat Pembelian" value={parseFloat(beli[0]).toFixed(2)} />
+                            <MyDataInfo2 label="Sisa Barang" value={parseFloat(beli[0] - jual[0]).toFixed(2)} />
+                            <MyGap jarak={10} border />
+                            <MyDataInfo2 label="Uang Penjualan" value={new Intl.NumberFormat().format(parseFloat(jual[1]))} />
+                            <MyDataInfo2 label="Uang Pembelian" value={new Intl.NumberFormat().format(parseFloat(beli[1]))} />
+                            <MyDataInfo2 label="Sisa uang" value={new Intl.NumberFormat().format(parseFloat(jual[1] - beli[1]))} />
+                            <MyGap jarak={10} border />
+                            <MyDataInfo2 label="Uang Rata-rata Penjualan" value={parseFloat(jual[1] / jual[0]).toFixed(2)} />
+                            <MyDataInfo2 label="Uang Rata-rata Pembelian" value={parseFloat(beli[1] / beli[0]).toFixed(2)} />
+
+
+
+
+                        </View>
+
+                        <View style={{
+                            marginTop: 10,
+                            paddingHorizontal: 10,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <View style={{
+                                width: '32%'
+
                             }}>
-                            Dari
-                        </Text>
-                    </View>
-                    <DatePicker
-                        style={{ width: '100%' }}
-                        date={kirim.tanggal_awal}
-                        mode="date"
-                        showIcon={false}
-                        placeholder="select date"
-                        format="YYYY-MM-DD"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
+                                <MyButton onPress={createPDF} Icons="print" warna={colors.danger} title="Print" />
+                            </View>
+                            <View style={{
+                                width: '32%'
 
-                                borderRadius: 10,
-                                borderWidth: 0,
-                                height: 45,
-                                backgroundColor: colors.zavalabs
-                            }
-                            // ... You can check the source to find the other keys.
-                        }}
-                        onDateChange={(date) => {
-                            setKirim({
-                                ...kirim,
-                                tanggal_awal: date
-                            });
-
-                        }}
-                    />
-                </View>
-
-                <View style={{
-                    flex: 1,
-                    paddingLeft: 5,
-                }}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 10,
-                        }}>
-                        <Icon type="ionicon" name="calendar-outline" color={colors.black} size={16} />
-                        <Text
-                            style={{
-                                fontFamily: fonts.secondary[600],
-                                color: colors.black,
-                                left: 10,
-                                fontSize: 12,
                             }}>
-                            Sampai
-                        </Text>
-                    </View>
-                    <DatePicker
-                        style={{ width: '100%' }}
-                        date={kirim.tanggal_akhir}
-                        mode="date"
-                        showIcon={false}
-                        placeholder="select date"
-                        format="YYYY-MM-DD"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
+                                <MyButton onPress={handleClick} Icons="download" warna={colors.success} title="Excel" />
+                            </View>
+                            <View style={{
+                                width: '32%'
 
-                                borderRadius: 10,
-                                borderWidth: 0,
-                                height: 45,
-                                backgroundColor: colors.zavalabs
-                            }
-                            // ... You can check the source to find the other keys.
-                        }}
-                        onDateChange={(date) => {
-                            setKirim({
-                                ...kirim,
-                                tanggal_akhir: date
-                            });
-
-                        }}
-                    />
-                </View>
-
-            </View>
-
-
-            <View style={{
-                marginTop: 10,
-                flexDirection: 'row'
-            }}>
-                <View style={{
-                    flex: 1
-                }}>
-                    <Text style={{
-                        fontFamily: fonts.secondary[600],
-                        fontSize: 12,
-                        textAlign: 'center',
-                        marginVertical: 10,
-                        borderBottomWidth: 1,
-                        paddingBottom: 5,
-                        borderBottomColor: colors.zavalabs
-                    }}>( <Text style={{
-                        color: colors.danger
-                    }}>{kirim.kadar}</Text> ) {moment(kirim.tanggal_awal).format('DD MMMM YYYY')} s/d {moment(kirim.tanggal_akhir).format('DD MMMM YYYY')}</Text>
-
-
-                </View>
-                <TouchableOpacity onPress={sendServer} style={{
-                    padding: 10,
-                    backgroundColor: colors.danger,
-                    borderRadius: 10,
-                    flexDirection: 'row'
-                }}>
-                    <Icon type='ionicon' name='refresh' size={12} color={colors.white} />
-                    <Text style={{
-                        left: 2,
-                        fontFamily: fonts.secondary[600],
-                        fontSize: 12,
-                        color: colors.white
-                    }}>Proses Data</Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* table */}
-
-
-
-            {!loading &&
-                <ScrollView>
-
-
-
-                    <View style={{
-                        borderWidth: 1,
-                        margin: 5,
-                        borderRadius: 10,
-                        overflow: 'hidden',
-                        borderColor: colors.border
-                    }}>
-                        <Text style={{
-                            backgroundColor: colors.danger,
-
-                            padding: 5,
-                            textAlign: 'center',
-                            color: colors.white
-                        }}>Data Penjualan / Pembelian</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Sisa Barang" value={parseFloat(beli[0] - jual[0]).toFixed(2)} />
-                            <MyDataInfo label="Sisa uang" value={new Intl.NumberFormat().format(parseFloat(jual[1] - beli[1]))} />
+                            }}>
+                                <MyButton onPress={() => navigation.goBack()} Icons="home" warna={colors.primary} title="Home" />
+                            </View>
                         </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Berat Penjualan" value={parseFloat(jual[0]).toFixed(2)} />
-                            <MyDataInfo label="Berat Pembelian" value={parseFloat(beli[0]).toFixed(2)} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Uang Penjualan" value={new Intl.NumberFormat().format(parseFloat(jual[1]))} />
-                            <MyDataInfo label="Uang Pembelian" value={new Intl.NumberFormat().format(parseFloat(beli[1]))} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Rata-rata Penjualan" value={parseFloat(jual[1] / jual[0]).toFixed(2)} />
-                            <MyDataInfo label="Rata-rata Pembelian" value={parseFloat(beli[1] / beli[0]).toFixed(2)} />
-                        </View>
+
 
                     </View>
 
-                    <View style={{
-                        borderWidth: 1,
-                        margin: 5,
-                        borderRadius: 10,
-                        overflow: 'hidden',
-                        borderColor: colors.border
-                    }}>
-                        <Text style={{
-                            backgroundColor: colors.black,
-
-                            padding: 5,
-                            textAlign: 'center',
-                            color: colors.white
-                        }}>Data Tukar Tambah / Tukar Kurang</Text>
-
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Sisa Barang" value={parseFloat(tukarKurang[0] - tukarTambah[0]).toFixed(2)} />
-                            <MyDataInfo label="Sisa uang" value={new Intl.NumberFormat().format(parseFloat(tukarTambah[1] - tukarKurang[1]))} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Berat Tukar Tambah" value={parseFloat(tukarTambah[0]).toFixed(2)} />
-                            <MyDataInfo label="Berat Tukar Kurang" value={parseFloat(tukarKurang[0]).toFixed(2)} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Uang Tukar Tambah" value={new Intl.NumberFormat().format(parseFloat(tukarTambah[1]))} />
-                            <MyDataInfo label="Uang Tukar Kurang" value={new Intl.NumberFormat().format(parseFloat(tukarKurang[1]))} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Rata-rata Tukar Tambah" value={parseFloat(tukarTambah[1] / tukarTambah[0]).toFixed(2)} />
-                            <MyDataInfo label="Rata-rata Tukar Kurang" value={parseFloat(tukarKurang[1] / tukarKurang[0]).toFixed(2)} />
-                        </View>
-
-                    </View>
-
-                    <View style={{
-                        borderWidth: 1,
-                        margin: 5,
-                        borderRadius: 10,
-                        overflow: 'hidden',
-                        borderColor: colors.border
-                    }}>
-                        <Text style={{
-                            backgroundColor: colors.warning,
-
-                            padding: 5,
-                            textAlign: 'center',
-                            color: colors.white
-                        }}>Total</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Sisa Barang Total" value={parseFloat(totalin[0] - totalout[0]).toFixed(2)} />
-                            <MyDataInfo label="Sisa uang Total" value={new Intl.NumberFormat().format(parseFloat(totalout[1] - totalin[1]))} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Berat TK + Penjualan" value={parseFloat(totalout[0]).toFixed(2)} />
-                            <MyDataInfo label="Berat TK + Pembelian" value={parseFloat(totalin[0]).toFixed(2)} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Uang TT + Penjualan" value={new Intl.NumberFormat().format(parseFloat(totalout[1]))} />
-                            <MyDataInfo label="Uang TK + Pembelian" value={new Intl.NumberFormat().format(parseFloat(totalin[1]))} />
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            marginVertical: 5,
-                        }}>
-                            <MyDataInfo label="Rata-rata TK + Penjualan" value={parseFloat(totalout[1] / totalout[0]).toFixed(2)} />
-                            <MyDataInfo label="Rata-rata TK + Pembelian" value={parseFloat(totalin[1] / totalin[0]).toFixed(2)} />
-                        </View>
-
-                    </View>
-
-                    <View style={{
-                        flexDirection: 'row'
-                    }}>
-                        <View style={{
-                            flex: 1,
-                            padding: 10,
-                        }}>
-                            <MyButton onPress={() => createPDF()} Icons="print" title="Print" warna={colors.danger} />
-                        </View>
-                        <View style={{
-                            flex: 1,
-                            padding: 10,
-                        }}>
-                            <MyButton onPress={() => navigation.goBack()} Icons="home" title="Halaman Depan" warna={colors.primary} />
-                        </View>
-                    </View>
-
-                </ScrollView>}
+                }
 
 
-
+            </ScrollView>
 
         </SafeAreaView>
     )

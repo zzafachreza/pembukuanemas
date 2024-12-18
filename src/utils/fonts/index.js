@@ -49,7 +49,7 @@ export const fonts = {
 
   subheadline3: {
     fontFamily: 'Montserrat-Medium',
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 26
   },
 
@@ -62,7 +62,7 @@ export const fonts = {
 
   body3: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 26
   },
 

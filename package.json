@@ -19,9 +19,11 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "axios": "^0.21.4",
+    "i": "^0.3.7",
     "intl": "^1.2.5",
     "mask-js": "^2.1.0",
     "moment": "^2.29.4",
+    "npm": "^11.0.0",
     "react": "16.13.1",
     "react-native": "0.65.1",
     "react-native-animated-pagination-dots": "^0.1.72",
@@ -32,6 +34,7 @@
     "react-native-document-picker": "^9.0.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-exit-app": "^1.1.0",
+    "react-native-file-viewer": "^2.1.5",
     "react-native-flash-message": "^0.1.17",
     "react-native-flatlist-slider": "^1.0.5",
     "react-native-floating-action": "^1.22.0",
@@ -59,7 +62,8 @@
     "react-native-webview": "^11.15.0",
     "react-native-youtube-iframe": "^2.2.2",
     "react-native-zavalabs-scanner": "^1.0.1",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

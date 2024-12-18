@@ -24,17 +24,17 @@ import Share from 'react-native-share';
 
 const MyMenu = ({ onPress, label = "Input Transaksi", icon = "duplicate" }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={{
-      marginTop: 10,
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={{
       // backgroundColor: 'red',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: windowWidth / 2.3,
+      borderRadius: 10,
+      backgroundColor: colors.primary,
+      height: windowWidth / 4,
     }}>
       <View style={{
-        width: windowWidth / 2.3,
-        borderRadius: 10,
-        backgroundColor: colors.primary,
-        height: windowWidth / 4,
+
         justifyContent: 'center',
         alignItems: 'center',
       }}>
@@ -108,26 +108,26 @@ export default function Home({ navigation }) {
         flex: 1,
         padding: 10,
       }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <MyMenu label="Input Transaksi" icon='cart' />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+          <MyMenu label="Input Transaksi" icon='cart' onPress={() => navigation.navigate('InputData')} />
           <MyMenu label="Lihat Laporan Laba Rugi" icon='bar-chart' />
 
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <MyMenu label='Lihat Jurnal Harian' icon='receipt' />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+          <MyMenu label='Lihat Jurnal Harian' onPress={() => navigation.navigate('LihatData')} icon='receipt' />
           <MyMenu label='Lihat Neraca' icon='pie-chart' />
 
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
           <MyMenu label='Lihat Jurnal Khusus' icon='logo-windows' />
           <MyMenu label='Data Custom' icon='logo-react' />
 
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <MyMenu label='Lihat Balance Barang' icon='logo-stackoverflow' />
-          <MyMenu label='Data Base' icon='server' />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+          <MyMenu label='Lihat Balance Barang' onPress={() => navigation.navigate('Laporan')} icon='logo-stackoverflow' />
+          <MyMenu label='Data Base' onPress={() => navigation.navigate('Database')} icon='server' />
 
         </View>
 

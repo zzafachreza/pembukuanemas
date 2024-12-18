@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Icon, ListItem, Button } from 'react-native-elements';
-import { colors } from '../../utils/colors';
+import { Icon } from 'react-native-elements';
+import { Color, colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
 import { TextInput } from 'react-native-gesture-handler';
 
 export default function MyInput({
   onFocus,
   label,
-  borderColor,
-  fontSize = 12,
-  backgroundColor = colors.zavalabs,
+  nolabel = false,
+  borderColor = Color.blueGray[300],
+  backgroundColor = colors.white,
+  returnKeyType,
+  returnKeyLabel,
   editable,
+  onEndEditing,
   icon = true,
   maxLength,
   iconname,
   onChangeText,
   value,
-  borderWidth = 0,
-  textColor = colors.black,
+  borderWidth = 1,
+  textColor = colors.primary,
   keyboardType,
   secureTextEntry,
   styleInput,
@@ -28,83 +31,78 @@ export default function MyInput({
   label2,
   styleLabel,
   colorIcon = colors.black,
+  rightLabel,  // Tambahkan parameter untuk label di kanan
 }) {
 
   const [tutup, setTutup] = useState(true);
   return (
-    <View style={{
-
-    }}>
-
-      <View
-        style={{
-
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingVertical: 5,
-        }}>
-        {icon && <Icon type="ionicon" name={iconname} color={colorIcon} size={16} />}
-        <Text
-          style={{
-            fontFamily: fonts.secondary[600],
-            color: textColor,
-            left: icon ? 10 : 5,
-            fontSize: 12,
-            ...styleLabel,
-          }}>
-          {label}
-        </Text>
-      </View>
+    <View style={{}}>
+      <Text style={{
+        ...fonts.subheadline3,
+        color: textColor,
+        marginBottom: 2,
+      }}>{label}</Text>
       <View style={{
-        position: 'relative'
+        height: 45,
+        flexDirection: 'row', // Gunakan row agar TextInput dan label bisa sejajar
+        alignItems: 'center', // Align center agar teks sejajar vertikal
+        borderColor: borderColor,
+        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: 'white',
       }}>
+        {icon && (
+          <View style={{
+            paddingLeft: 12,
+          }}>
+            <Icon type='ionicon' name={iconname} color={Color.blueGray[300]} size={20} />
+          </View>
+        )}
         <TextInput
-          editable={editable}
-          placeholderTextColor={colors.border}
+          returnKeyType={returnKeyType}
+          returnKeyLabel={returnKeyLabel}
+          onEndEditing={onEndEditing}
           maxLength={maxLength}
+          keyboardType={keyboardType}
+          onChangeText={onChangeText}
+          value={value}
+          placeholderTextColor={Color.blueGray[400]}
+          editable={editable}
           multiline={multiline}
           autoFocus={autoFocus}
           onFocus={onFocus}
           placeholder={placeholder}
           secureTextEntry={secureTextEntry ? tutup : false}
-          keyboardType={keyboardType}
-
-          value={value}
-          onChangeText={onChangeText}
           autoCapitalize="none"
           style={{
-            textAlign: 'center',
-            backgroundColor: backgroundColor,
-            borderColor: borderColor,
-            borderRadius: 10,
-            borderWidth: borderWidth,
-            paddingLeft: 10,
-            color: colors.black,
-            fontSize: fontSize,
-            fontFamily: fonts.primary[400],
-            ...styleInput,
+            ...fonts.body3,
+            flex: 1, // Flex untuk mengisi ruang yang ada
+            paddingLeft: icon ? 10 : 40,
+            paddingRight: rightLabel ? 10 : 0, // Spasi tambahan jika ada rightLabel
+            height: 50,
+            color: Color.blueGray[900],
           }}
         />
-        {secureTextEntry &&
-          <TouchableOpacity onPress={() => {
-            if (tutup) {
-              setTutup(false);
-            } else {
-              setTutup(true);
-            }
-          }} style={{
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
+        {rightLabel && (
+          <Text style={{
+            ...fonts.body3,
+            color: colors.primary,
+            paddingRight: 12, // Spasi di kanan untuk label
+          }}>
+            {rightLabel}
+          </Text>
+        )}
+        {secureTextEntry && (
+          <TouchableOpacity onPress={() => setTutup(!tutup)} style={{
             paddingHorizontal: 20,
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100%'
+            height: '100%',
           }}>
-            <Icon type="ionicon" name={!tutup ? 'eye-off' : 'eye'} color={colorIcon} size={18} />
-          </TouchableOpacity>}
+            <Icon type="ionicon" name={!tutup ? 'eye-off' : 'eye'} color={colors.border} size={18} />
+          </TouchableOpacity>
+        )}
       </View>
-
     </View>
   );
 }
