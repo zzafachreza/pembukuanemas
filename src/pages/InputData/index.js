@@ -33,7 +33,71 @@ export default function InputData({ navigation, route }) {
         nama: '',
     });
 
+    const [SALE, setSALE] = useState('');
+    const [BUY, setBUY] = useState('');
     const __generateNota = () => {
+
+        let TAHUN = moment().format('YYYY');
+        let BULAN = moment().format('MM');
+
+
+        // JUAL
+        let SQLjual = `SELECT nota FROM transaksi WHERE jenis_transaksi='Penjualan' AND STRFTIME('${TAHUN}-${BULAN}', tanggal) ORDER BY id*1 DESC`;
+        let SQLBeli = `SELECT nota FROM transaksi WHERE jenis_transaksi='Pembelian' AND STRFTIME('${TAHUN}-${BULAN}', tanggal) ORDER BY id*1 DESC`;
+
+        __conn().transaction(tx => {
+            tx.executeSql(SQLjual, [], (tx, res) => {
+                console.log(res.rows.item(0).nota)
+                if (res.rows.length > 0) {
+                    let NOTA_LAST = res.rows.item(0).nota;
+                    let NUMBER = parseInt(NOTA_LAST.toString().substr(-4)) + 1
+                    let NEW_NUMBER = '';
+                    if (NUMBER.toString().length == 1) {
+                        NEW_NUMBER = '000' + NUMBER
+                    } else if (NUMBER.toString().length == 2) {
+                        NEW_NUMBER = '00' + NUMBER
+                    } else if (NUMBER.toString().length == 3) {
+                        NEW_NUMBER = '0' + NUMBER
+                    } else if (NUMBER.toString().length == 4) {
+                        NEW_NUMBER = NUMBER
+                    }
+                    setSALE('S' + TAHUN + BULAN + NEW_NUMBER);
+                } else {
+                    setSALE('S' + TAHUN + BULAN + '0001');
+                }
+
+
+
+            })
+
+        })
+
+        __conn().transaction(tx => {
+            tx.executeSql(SQLBeli, [], (tx, res) => {
+
+                if (res.rows.length > 0) {
+
+                    let NOTA_LAST = res.rows.item(0).nota;
+                    let NUMBER = parseInt(NOTA_LAST.toString().substr(-4)) + 1
+                    let NEW_NUMBER = '';
+                    if (NUMBER.toString().length == 1) {
+                        NEW_NUMBER = '000' + NUMBER
+                    } else if (NUMBER.toString().length == 2) {
+                        NEW_NUMBER = '00' + NUMBER
+                    } else if (NUMBER.toString().length == 3) {
+                        NEW_NUMBER = '0' + NUMBER
+                    } else if (NUMBER.toString().length == 4) {
+                        NEW_NUMBER = NUMBER
+                    }
+                    console.log(NEW_NUMBER)
+                    setBUY('B' + TAHUN + BULAN + NEW_NUMBER);
+
+                } else {
+                    setBUY('B' + TAHUN + BULAN + '0001');
+                }
+            })
+
+        })
 
     }
 
@@ -49,7 +113,7 @@ export default function InputData({ navigation, route }) {
 
     const sendServer = () => {
         console.log(kirim);
-        let SQL = `INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga,nota,pembayaran,nama,barang) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}','${kirim.nota}','${kirim.pembayaran}','${kirim.nama}','${kirim.barang}')`;
+        let SQL = `INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga,nota,pembayaran,nama,barang) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}','${kirim.jenis_transaksi == 'Penjualan' ? SALE : kirim.jenis_transaksi == 'Pembelian' ? BUY : kirim.nota}','${kirim.pembayaran}','${kirim.nama}','${kirim.barang}')`;
         console.log('SQL', SQL);
         __conn().transaction(tx => {
 
@@ -73,7 +137,8 @@ export default function InputData({ navigation, route }) {
                     harga: '',
                     pembayaran: 'Tunai',
                     nama: '',
-                })
+                });
+                __generateNota()
             })
 
         });
@@ -83,7 +148,7 @@ export default function InputData({ navigation, route }) {
 
 
     useEffect(() => {
-
+        __generateNota()
 
     }, []);
 
@@ -121,10 +186,10 @@ export default function InputData({ navigation, route }) {
                 <MyGap jarak={10} />
                 <MyCalendar label="Tanggal" value={kirim.tanggal} onDateChange={x => setKirim({ ...kirim, tanggal: x })} />
                 <MyGap jarak={10} />
-                <MyInput iconname="speedometer" label="No. Nota" value={kirim.nota} onChangeText={x => setKirim({
+                <MyInput iconname="speedometer" label="No. Nota" value={kirim.jenis_transaksi == 'Penjualan' ? SALE : kirim.jenis_transaksi == 'Pembelian' ? BUY : kirim.nota} onChangeText={x => setKirim({
                     ...kirim,
                     nota: x
-                })} keyboardType='decimal-pad' />
+                })} />
                 <MyGap jarak={10} />
                 <MyGap jarak={10} />
                 <MyInput iconname="speedometer" label="Berat (gram)" value={kirim.berat} onChangeText={x => setKirim({

@@ -19,7 +19,7 @@ import { color } from 'react-native-elements/dist/helpers';
 import { launchCamera } from 'react-native-image-picker';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
-
+import Orientation from 'react-native-orientation-locker';
 
 
 const MyMenu = ({ onPress, label = "Input Transaksi", icon = "duplicate" }) => {
@@ -53,7 +53,17 @@ const MyMenu = ({ onPress, label = "Input Transaksi", icon = "duplicate" }) => {
   )
 }
 
+
+
 export default function Home({ navigation }) {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      Orientation.lockToPortrait();
+    }
+  }, [isFocused])
+
+
   return (
     <SafeAreaView style={{
       flex: 1,

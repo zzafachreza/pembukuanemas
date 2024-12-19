@@ -70,40 +70,38 @@ export default function AAAtur({ navigation }) {
                     fontSize: windowWidth / 18,
                     color: colors.white
                 }}>Toko Emas Permata</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Account')} style={{
+                {/* <TouchableOpacity onPress={() => navigation.navigate('Account')} style={{
                     padding: 5,
                     backgroundColor: colors.white,
                     borderRadius: 5,
                 }}>
                     <Icon type='ionicon' name='settings' size={windowWidth / 17} color={colors.primary} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             <View style={{
                 flex: 1,
                 padding: 20,
             }}>
-                <TouchableOpacity onPress={() => btnKeluar()} style={{
-                    flexDirection: 'row',
-                    padding: 20,
-                    marginVertical: 2
-                }}>
-                    <Text style={{
-                        flex: 1,
-                        fontFamily: fonts.primary[600],
-                        fontSize: windowWidth / 20,
-                        color: colors.black
-                    }}>Buat Database</Text>
-                    <Icon type='ionicon' name='server' color={colors.black} />
-                </TouchableOpacity>
 
+
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Image source={require('../../assets/logo.png')} style={{
+                        width: 180,
+                        height: 130,
+                        resizeMode: 'contain'
+                    }} />
+                </View>
 
             </View>
 
-            {/* <View style={{
+            <View style={{
                 padding: 20,
             }}>
-                <MyButton onPress={btnKeluar} warna="#F5F2E6" title="Keluar" Icons="log-out" iconColor={colors.black} colorText={colors.black} />
-            </View> */}
+                <MyButton onPress={btnKeluar} warna="white" title="Keluar" Icons="log-out" iconColor={colors.black} colorText={colors.black} />
+            </View>
         </SafeAreaView>
     )
 }

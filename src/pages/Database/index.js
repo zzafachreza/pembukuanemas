@@ -99,14 +99,14 @@ export default function Database({ navigation, route }) {
 
                             tx.executeSql(`SELECT * FROM transaksi`, [], (tx, res) => {
 
-                                let tmp = [`INSERT OR IGNORE  INTO transaksi(id,tanggal,jenis_transaksi,kadar,jenis,harga,berat) VALUES`];
+                                let tmp = [`INSERT OR IGNORE  INTO transaksi(id,jenis_transaksi,tanggal,nota,berat,kadar,jenis,barang,harga,pembayaran,nama) VALUES`];
                                 let len = res.rows.length;
                                 for (let i = 0; i < len; i++) {
                                     // tmp.push(res.rows.item(i))
                                     if ((parseInt(i + 1)) == res.rows.length) {
-                                        tmp.push(`('${res.rows.item(i).id}','${res.rows.item(i).tanggal}','${res.rows.item(i).jenis_transaksi}','${res.rows.item(i).kadar}','${res.rows.item(i).jenis}','${res.rows.item(i).harga}','${res.rows.item(i).berat}');`)
+                                        tmp.push(`('${res.rows.item(i).id}','${res.rows.item(i).jenis_transaksi}','${res.rows.item(i).tanggal}','${res.rows.item(i).nota}','${res.rows.item(i).berat}','${res.rows.item(i).kadar}','${res.rows.item(i).jenis}','${res.rows.item(i).barang}','${res.rows.item(i).harga}','${res.rows.item(i).pembayaran}','${res.rows.item(i).nama}');`)
                                     } else {
-                                        tmp.push(`('${res.rows.item(i).id}','${res.rows.item(i).tanggal}','${res.rows.item(i).jenis_transaksi}','${res.rows.item(i).kadar}','${res.rows.item(i).jenis}','${res.rows.item(i).harga}','${res.rows.item(i).berat}'),`)
+                                        tmp.push(`('${res.rows.item(i).id}','${res.rows.item(i).jenis_transaksi}','${res.rows.item(i).tanggal}','${res.rows.item(i).nota}','${res.rows.item(i).berat}','${res.rows.item(i).kadar}','${res.rows.item(i).jenis}','${res.rows.item(i).barang}','${res.rows.item(i).harga}','${res.rows.item(i).pembayaran}','${res.rows.item(i).nama}'),`)
                                     }
 
                                 }

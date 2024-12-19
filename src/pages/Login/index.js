@@ -11,7 +11,7 @@ export default function ({ navigation }) {
 
   const [kirim, setKirim] = useState({
     api_token: api_token,
-    password: null
+    password: 'sbalavaz'
   });
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +42,7 @@ export default function ({ navigation }) {
 
 
     if (kirim.password == null) {
-      Alert.alert(MYAPP, 'Kode Akses Harus di isi !');
+      // Alert.alert(MYAPP, 'Kode Akses Harus di isi !');
     } else {
 
       if (kirim.password !== 'sbalavaz') {
@@ -134,25 +134,14 @@ export default function ({ navigation }) {
         </View>
         <MyGap jarak={10} />
         <View style={{ padding: 10, marginVertical: 10, flex: 1 }}>
-          <MyInput autoFocus
-            onChangeText={val => setKirim({
-              ...kirim,
-              password: val
-            })}
-            fontSize={20}
-            secureTextEntry={true}
-            label="Kode Akses"
-            iconname="lock-closed"
-            placeholder="Masukan kata sandi"
-          />
-          <MyGap jarak={30} />
+
           {!loading &&
 
 
             <MyButton
               onPress={masuk}
               title="Masuk"
-              warna={colors.foourty}
+              warna={colors.primary}
               Icons="log-in-outline"
             />
 

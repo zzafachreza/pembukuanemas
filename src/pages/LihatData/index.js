@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View, PermissionsAndroid, Linking } from 'react-native'
+import { Alert, StyleSheet, Text, View, PermissionsAndroid, Linking, TouchableWithoutFeedback } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { apiURL, getData, MYAPP, storeData } from '../../utils/localStorage';
@@ -19,8 +19,12 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 var RNFS = require('react-native-fs');
+import Orientation from 'react-native-orientation-locker';
 import XLSX from 'xlsx';
 export default function LihatData({ navigation, route }) {
+
+
+
 
     const [loading, setLoading] = useState(false);
     const __conn = () => {
@@ -129,6 +133,7 @@ export default function LihatData({ navigation, route }) {
     useEffect(() => {
 
         if (isFocused) {
+            Orientation.lockToLandscape();
             __getTransaction();
         }
 
@@ -298,7 +303,39 @@ export default function LihatData({ navigation, route }) {
             }}>
 
                 {/* data */}
+                <View style={{
+                    flexDirection: 'row',
+                    backgroundColor: colors.primary
+                }}>
 
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.3, }}>
+                        <Text style={styles.textJudul}>Jenis Transaksi</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.3, }}>
+                        <Text style={styles.textJudul}>No. Nota</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Berat</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Stok</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Jenis</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Barang</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Harga</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Metode Pembayaran</Text>
+                    </View>
+                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Nama</Text>
+                    </View>
+                </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
 
 
@@ -320,159 +357,39 @@ export default function LihatData({ navigation, route }) {
                         }
 
                         return (
-                            <View style={{
-                                padding: 10,
-                                borderWidth: 1,
-                                marginVertical: 2,
-                                borderColor: Color.blueGray[400],
-                                borderRadius: 4,
+                            <TouchableOpacity onPress={() => navigation.navigate('DetailData', item)} style={{
+                                flexDirection: 'row',
+                                backgroundColor: colors.primary
                             }}>
-                                <View style={{
-                                    flexDirection: 'row'
-                                }}>
-                                    <Text style={{
-                                        flex: 0.6,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Jenis Transaksi</Text>
-                                    <Text style={{
-                                        flex: 0.05,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>:</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.jenis_transaksi}</Text>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.jenis_transaksi}</Text>
                                 </View>
-                                <View style={{
-                                    flexDirection: 'row'
-                                }}>
-                                    <Text style={{
-                                        flex: 0.6,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>No. Nota</Text>
-                                    <Text style={{
-                                        flex: 0.05,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>:</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.nota}</Text>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5, }}>
+                                    <Text style={styles.textIsi}>{item.nota}</Text>
                                 </View>
 
-                                <View style={{
-                                    marginTop: 10,
-                                    flexDirection: 'row',
-                                    padding: 2,
-                                }}>
-                                    <Text style={{
-                                        flex: 0.7,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Berat (gram)</Text>
-                                    <Text style={{
-                                        flex: 0.5,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Stok</Text>
-                                    <Text style={{
-                                        flex: 0.5,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Jenis</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Barang</Text>
-                                    <Text style={{
-                                        flex: 0.3,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>harga</Text>
-
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{parseFloat(thisberat).toFixed(2)}</Text>
                                 </View>
-                                <View style={{
-                                    padding: 2,
-                                    borderWidth: 1,
-                                    marginBottom: 10,
-                                    flexDirection: 'row',
-                                    borderColor: Color.blueGray[400],
-                                }}>
-                                    <Text style={{
-                                        flex: 0.7,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{parseFloat(thisberat).toFixed(2)}</Text>
-                                    <Text style={{
-                                        flex: 0.5,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.kadar}</Text>
-                                    <Text style={{
-                                        flex: 0.5,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.jenis}</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.barang}</Text>
-                                    <Text style={{
-                                        flex: 0.3,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{new Intl.NumberFormat().format(thisharga)}</Text>
-
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.kadar}</Text>
                                 </View>
-
-                                <View style={{
-                                    flexDirection: 'row'
-                                }}>
-                                    <Text style={{
-                                        flex: 0.6,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Metode Pembayaran</Text>
-                                    <Text style={{
-                                        flex: 0.05,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>:</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.pembayaran}</Text>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.jenis}</Text>
                                 </View>
-                                <View style={{
-                                    flexDirection: 'row'
-                                }}>
-                                    <Text style={{
-                                        flex: 0.6,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>Nama</Text>
-                                    <Text style={{
-                                        flex: 0.05,
-                                        fontFamily: fonts.secondary[600],
-                                        fontSize: 10,
-                                    }}>:</Text>
-                                    <Text style={{
-                                        flex: 1,
-                                        fontFamily: fonts.secondary[800],
-                                        fontSize: 10,
-                                    }}>{item.nama}</Text>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.barang}</Text>
                                 </View>
-
-                            </View>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5, }}>
+                                    <Text style={styles.textIsi}>{new Intl.NumberFormat().format(thisharga)}</Text>
+                                </View>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.pembayaran}</Text>
+                                </View>
+                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                    <Text style={styles.textIsi}>{item.nama}</Text>
+                                </View>
+                            </TouchableOpacity>
                         )
                     })}
                 </ScrollView>
@@ -511,14 +428,14 @@ export default function LihatData({ navigation, route }) {
 const styles = StyleSheet.create({
     textJudul: {
         fontFamily: fonts.secondary[600],
-        fontSize: 9,
+        fontSize: 8,
         color: colors.black,
         textAlign: 'center'
     },
     textIsi: {
         paddingVertical: 3,
         fontFamily: fonts.secondary[400],
-        fontSize: 9,
+        fontSize: 8,
         color: colors.black,
         textAlign: 'center'
     }
