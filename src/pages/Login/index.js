@@ -11,7 +11,7 @@ export default function ({ navigation }) {
 
   const [kirim, setKirim] = useState({
     api_token: api_token,
-    password: 'sbalavaz'
+    password: ''
   });
   const [loading, setLoading] = useState(false);
 
@@ -132,9 +132,21 @@ export default function ({ navigation }) {
 
 
         </View>
-        <MyGap jarak={10} />
-        <View style={{ padding: 10, marginVertical: 10, flex: 1 }}>
 
+
+        <View style={{ padding: 10, marginVertical: 10, flex: 1 }}>
+          <MyInput autoFocus
+            onChangeText={val => setKirim({
+              ...kirim,
+              password: val
+            })}
+            fontSize={20}
+            secureTextEntry={true}
+            label="Kode Akses"
+            iconname="lock-closed"
+            placeholder="Masukan kata sandi"
+          />
+          <MyGap jarak={30} />
           {!loading &&
 
 

@@ -57,7 +57,7 @@ export default function LihatData({ navigation, route }) {
                     <th>Jenis</th>
                     <th>Barang</th>
                     <th>Harga</th>
-                    <th>Metode Pembayaran</th>
+                    <th>Pembayaran</th>
                     <th>Nama</th>
                  </tr> `,
 
@@ -308,16 +308,16 @@ export default function LihatData({ navigation, route }) {
                     backgroundColor: colors.primary
                 }}>
 
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.3, }}>
-                        <Text style={styles.textJudul}>Jenis Transaksi</Text>
+                    <View style={{ flex: 0.25, backgroundColor: colors.white, margin: 0.3, }}>
+                        <Text style={styles.textJudul}>Transaksi</Text>
                     </View>
                     <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.3, }}>
                         <Text style={styles.textJudul}>No. Nota</Text>
                     </View>
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                    <View style={{ flex: 0.25, backgroundColor: colors.white, margin: 0.5, }}>
                         <Text style={styles.textJudul}>Berat</Text>
                     </View>
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                    <View style={{ flex: 0.25, backgroundColor: colors.white, margin: 0.5, }}>
                         <Text style={styles.textJudul}>Stok</Text>
                     </View>
                     <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
@@ -326,13 +326,13 @@ export default function LihatData({ navigation, route }) {
                     <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
                         <Text style={styles.textJudul}>Barang</Text>
                     </View>
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                    <View style={{ flex: 0.35, backgroundColor: colors.white, margin: 0.5, }}>
                         <Text style={styles.textJudul}>Harga</Text>
                     </View>
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
-                        <Text style={styles.textJudul}>Metode Pembayaran</Text>
+                    <View style={{ flex: 0.35, backgroundColor: colors.white, margin: 0.5, }}>
+                        <Text style={styles.textJudul}>Pembayaran</Text>
                     </View>
-                    <View style={{ flex: 0.3, backgroundColor: colors.white, margin: 0.5, }}>
+                    <View style={{ flex: 0.4, backgroundColor: colors.white, margin: 0.5, }}>
                         <Text style={styles.textJudul}>Nama</Text>
                     </View>
                 </View>
@@ -361,17 +361,17 @@ export default function LihatData({ navigation, route }) {
                                 flexDirection: 'row',
                                 backgroundColor: colors.primary
                             }}>
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                <View style={{ flex: 0.25, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.jenis_transaksi}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5, }}>
                                     <Text style={styles.textIsi}>{item.nota}</Text>
                                 </View>
 
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                <View style={{ flex: 0.25, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{parseFloat(thisberat).toFixed(2)}</Text>
                                 </View>
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                <View style={{ flex: 0.25, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.kadar}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
@@ -380,13 +380,13 @@ export default function LihatData({ navigation, route }) {
                                 <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.barang}</Text>
                                 </View>
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5, }}>
+                                <View style={{ flex: 0.35, backgroundColor: colors.white, marginBottom: 0.5, }}>
                                     <Text style={styles.textIsi}>{new Intl.NumberFormat().format(thisharga)}</Text>
                                 </View>
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                <View style={{ flex: 0.35, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.pembayaran}</Text>
                                 </View>
-                                <View style={{ flex: 0.3, backgroundColor: colors.white, marginBottom: 0.5 }}>
+                                <View style={{ flex: 0.4, backgroundColor: colors.white, marginBottom: 0.5 }}>
                                     <Text style={styles.textIsi}>{item.nama}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -428,14 +428,14 @@ export default function LihatData({ navigation, route }) {
 const styles = StyleSheet.create({
     textJudul: {
         fontFamily: fonts.secondary[600],
-        fontSize: 8,
+        fontSize: 10,
         color: colors.black,
         textAlign: 'center'
     },
     textIsi: {
         paddingVertical: 3,
         fontFamily: fonts.secondary[400],
-        fontSize: 8,
+        fontSize: 10,
         color: colors.black,
         textAlign: 'center'
     }

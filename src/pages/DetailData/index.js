@@ -114,16 +114,16 @@ export default function DetailData({ navigation, route }) {
             <View style={{
                 flex: 1,
             }}>
-
-                <MylistData label="Kode Transaksi" value={item.jenis_transaksi} />
                 <MylistData label="Tanggal" value={moment(item.tanggal).format('dddd, DD MMMM YYYY')} />
+                <MylistData label="Kode Transaksi" value={item.jenis_transaksi} />
+
                 <MylistData label="No. Nota" value={item.nota} />
-                <MylistData label="Berat (gram)" value={parseFloat(item.berat).toFixed(2)} />
+                <MylistData label="Berat" value={parseFloat(item.berat).toFixed(2)} />
                 <MylistData label="Stok" value={item.kadar} />
                 <MylistData label="Jenis" value={item.jenis} />
                 <MylistData label="Barang" value={item.barang} />
                 <MylistData label="Harga" value={new Intl.NumberFormat().format(item.harga)} />
-                <MylistData label="Metode Pembayaran" value={item.pembayaran} />
+                <MylistData label="Pembayaran" value={item.pembayaran} />
                 <MylistData label="Nama" value={item.nama} />
             </View>
             <View style={{

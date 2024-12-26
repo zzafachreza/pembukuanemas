@@ -26,8 +26,8 @@ export default function InputData({ navigation, route }) {
         nota: '',
         berat: '',
         kadar: 'LM',
-        jenis: 'Anting',
         barang: '',
+        jenis: 'Anting',
         harga: '',
         pembayaran: 'Tunai',
         nama: '',
@@ -113,7 +113,7 @@ export default function InputData({ navigation, route }) {
 
     const sendServer = () => {
         console.log(kirim);
-        let SQL = `INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga,nota,pembayaran,nama,barang) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}','${kirim.jenis_transaksi == 'Penjualan' ? SALE : kirim.jenis_transaksi == 'Pembelian' ? BUY : kirim.nota}','${kirim.pembayaran}','${kirim.nama}','${kirim.barang}')`;
+        let SQL = `INSERT INTO transaksi(tanggal,jenis_transaksi,berat,kadar,jenis,harga,nota,pembayaran,nama,barang) VALUES('${kirim.tanggal}','${kirim.jenis_transaksi}','${kirim.berat}','${kirim.kadar}','${kirim.jenis}','${kirim.harga}','${kirim.nota}','${kirim.pembayaran}','${kirim.nama}','${kirim.barang}')`;
         console.log('SQL', SQL);
         __conn().transaction(tx => {
 
@@ -138,7 +138,7 @@ export default function InputData({ navigation, route }) {
                     pembayaran: 'Tunai',
                     nama: '',
                 });
-                __generateNota()
+
             })
 
         });
@@ -148,7 +148,7 @@ export default function InputData({ navigation, route }) {
 
 
     useEffect(() => {
-        __generateNota()
+        // __generateNota()
 
     }, []);
 
@@ -163,6 +163,8 @@ export default function InputData({ navigation, route }) {
         }}>
             <ScrollView showsVerticalScrollIndicator={false}>
 
+                <MyGap jarak={10} />
+                <MyCalendar label="Tanggal" value={kirim.tanggal} onDateChange={x => setKirim({ ...kirim, tanggal: x })} />
                 <MyGap jarak={10} />
                 {kirim.pilihan == 'Isi Sendiri' &&
 
@@ -183,16 +185,16 @@ export default function InputData({ navigation, route }) {
                         { label: 'Isi Sendiri', value: 'Isi Sendiri' },
                     ]} />
                 }
+
+
                 <MyGap jarak={10} />
-                <MyCalendar label="Tanggal" value={kirim.tanggal} onDateChange={x => setKirim({ ...kirim, tanggal: x })} />
-                <MyGap jarak={10} />
-                <MyInput iconname="speedometer" label="No. Nota" value={kirim.jenis_transaksi == 'Penjualan' ? SALE : kirim.jenis_transaksi == 'Pembelian' ? BUY : kirim.nota} onChangeText={x => setKirim({
+                <MyInput iconname="speedometer" label="No. Nota" value={kirim.nota} onChangeText={x => setKirim({
                     ...kirim,
                     nota: x
                 })} />
                 <MyGap jarak={10} />
                 <MyGap jarak={10} />
-                <MyInput iconname="speedometer" label="Berat (gram)" value={kirim.berat} onChangeText={x => setKirim({
+                <MyInput iconname="speedometer" label="Berat" value={kirim.berat} onChangeText={x => setKirim({
                     ...kirim,
                     berat: x
                 })} keyboardType='decimal-pad' />
@@ -245,22 +247,24 @@ export default function InputData({ navigation, route }) {
                     { label: 'Kalung', value: 'Kalung' },
                     { label: 'Liontin', value: 'Liontin' },
                     { label: 'Batangan', value: 'Batangan' },
+                    { label: 'Gabungan', value: 'Gabungan' },
                     { label: 'Lain Lain', value: 'Lain Lain' },
                 ]} />
-                <MyGap jarak={10} />
-                <MyInput iconname="pricetag" label="Harga (Rp dalam K)" value={kirim.harga} onChangeText={x => setKirim({
-                    ...kirim,
-                    harga: x
-                })} keyboardType='decimal-pad' />
                 <MyGap jarak={10} />
                 <MyInput iconname="cube" label="Barang" value={kirim.barang} onChangeText={x => setKirim({
                     ...kirim,
                     barang: x
                 })} />
                 <MyGap jarak={10} />
-                <MyPicker label="Metode Pembayaran" iconname="list" onValueChange={x => setKirim({
+                <MyInput iconname="pricetag" label="Harga" value={kirim.harga} onChangeText={x => setKirim({
                     ...kirim,
-                    jenis: x
+                    harga: x
+                })} keyboardType='decimal-pad' />
+
+                <MyGap jarak={10} />
+                <MyPicker label="Pembayaran" iconname="list" onValueChange={x => setKirim({
+                    ...kirim,
+                    pembayaran: x
                 })} value={kirim.pembayaran} data={[
                     { label: 'Tunai', value: 'Tunai' },
                     { label: 'BCA', value: 'BCA' },
@@ -269,6 +273,15 @@ export default function InputData({ navigation, route }) {
                     { label: 'Mandiri', value: 'Mandiri' },
                     { label: 'Piutang', value: 'Piutang' },
                     { label: 'Utang', value: 'Utang' },
+                    { label: 'BCA + Tunai', value: 'BCA + Tunai' },
+                    { label: 'BRI + Tunai', value: 'BRI + Tunai' },
+                    { label: 'BNI + Tunai', value: 'BNI + Tunai' },
+                    { label: 'Mandiri + Tunai', value: 'Mandiri + Tunai' },
+                    { label: 'BCA + Lain', value: 'BCA + Lain ' },
+                    { label: 'BRI + Lain', value: 'BRI + Lain' },
+                    { label: 'BNI + Lain', value: 'BNI + Lain' },
+                    { label: 'Mandiri + Lain', value: 'Mandiri + Lain' },
+
                 ]} />
                 <MyGap jarak={10} />
                 <MyInput iconname="person" label="Nama" value={kirim.nama} onChangeText={x => setKirim({
