@@ -168,9 +168,9 @@ export default function InputData({ navigation, route }) {
                 <MyGap jarak={10} />
                 {kirim.pilihan == 'Isi Sendiri' &&
 
-                    <MyInput label="Jenis Transaksi" placeholder="Isi sendiri jenis transaksi" iconname="cart" onChangeText={x => setKirim({
+                    <MyInput label="Jenis Transaksi" value={kirim.jenis_transaksi} placeholder="Isi sendiri jenis transaksi" iconname="cart" onChangeText={x => setKirim({
                         ...kirim,
-                        jenis_transaksi: ''
+                        jenis_transaksi: x
                     })} />
                 }
                 {kirim.pilihan !== 'Isi Sendiri' &&

@@ -37,50 +37,19 @@ export default function DetailData({ navigation, route }) {
 
         console.log(id);
 
-
-
         __conn().transaction(tx => {
-            let SQLDELETE = `DELETE FROM transaksi WHERE nota='${nota}'`;
-            tx.executeSql(SQLDELETE, [], (tx, res) => { })
 
-            tx.executeSql(`SELECT * FROM transaksi WHERE jenis_transaksi='${jenis_transaksi}' AND STRFTIME('${TAHUN}-${BULAN}', tanggal)`, [], (tx, res) => {
+            tx.executeSql(`DELETE FROM transaksi WHERE id='${id}'`, [], (tx, res) => {
 
-                let tmp = [];
-                let len = res.rows.length;
-                for (let i = 0; i < len; i++) {
-                    let notaDELETE = parseInt(nota.toString().substr(-4));
-                    let thenota = parseInt(res.rows.item(i).nota.toString().substr(-4))
+                console.log(res);
 
-                    if (thenota > notaDELETE) {
-                        let ID = res.rows.item(i).id;
-                        let NUMBER = thenota - 1;
-                        let NEW_NUMBER = '';
-
-                        if (NUMBER.toString().length == 1) {
-                            NEW_NUMBER = '000' + NUMBER
-                        } else if (NUMBER.toString().length == 2) {
-                            NEW_NUMBER = '00' + NUMBER
-                        } else if (NUMBER.toString().length == 3) {
-                            NEW_NUMBER = '0' + NUMBER
-                        } else if (NUMBER.toString().length == 4) {
-                            NEW_NUMBER = NUMBER
-                        }
-                        let NEW_NOTA = (jenis_transaksi == 'Penjualan' ? 'S' : 'B') + TAHUN + BULAN + NEW_NUMBER;
-                        let SQLupdate = `UPDATE transaksi SET nota='${NEW_NOTA}' WHERE id='${ID}'`;
-
-
-                        tx.executeSql(SQLupdate, [], (tx, res) => { })
-                    }
-                }
-
-
+                showMessage({
+                    message: 'Data berhasil di hapus !',
+                    type: 'success'
+                });
+                navigation.goBack();
             })
 
-            showMessage({
-                type: 'success',
-                message: 'Transaksi berhasil di hapus !'
-            });
-            navigation.goBack();
 
         })
 
